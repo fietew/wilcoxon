@@ -1,7 +1,8 @@
 %% 
 
-N = 3;
-pquart = 0.5;
+N = 10;
+pH0 = 0.5;
+pH1 = 0.9;
 ptie = 0.5;
 peq0 = 0.5;
 alpha = 0.05;
@@ -11,10 +12,10 @@ peqvec = 0:0.1:1.0;
 
 %% 
 
-[distbase, wbase] = wilcoxon_dist_simple(N, pquart);
-[distwilcox, wwilcox] = wilcoxon_dist_alt(N, pquart, ptie, peq0, 'Wilcoxon');
-[distpratt, wpratt] = wilcoxon_dist_alt(N, pquart, ptie, peq0, 'Pratt');
-[distmaras, wmaras] = wilcoxon_dist_alt(N, pquart, ptie, peq0, 'Marascuilo');
+[distbase, wbase] = wilcoxon_dist_simple(N, pH0);
+[distwilcox, wwilcox] = wilcoxon_dist_sim(N, pH0, ptie, peq0, 'Wilcoxon');
+[distpratt, wpratt] = wilcoxon_dist_sim(N, pH0, ptie, peq0, 'Pratt');
+[distmaras, wmaras] = wilcoxon_dist_sim(N, pH0, ptie, peq0, 'Marascuilo');
 
 figure;
 subplot(2,1,1);
@@ -31,6 +32,8 @@ stairs(wwilcox, cumsum(distwilcox), '-');
 stairs(wpratt, cumsum(distpratt), '--');
 stairs(wmaras, cumsum(distmaras), '--');
 hold off;
+
+%% 
 
 %%
 

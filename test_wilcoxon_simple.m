@@ -14,7 +14,7 @@ for alpha = alphavec
     if isempty(wdx)
         wcrit(adx,ndx) = NaN;
     else
-        wcrit(adx,ndx) = w(wdx(end));  
+        wcrit(adx,ndx) = w(wdx(end));
     end
 
     plot(w, cumsum(dist), 'o-');

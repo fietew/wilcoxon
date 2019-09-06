@@ -1,12 +1,13 @@
-function [dist, w] = wilcoxon_dist_groups(Neq0, T, pquart, strateq0)
+function [dist, w] = wilcoxon_dist_groups(pH0, Neq0, T, strateq0)
 
 N = Neq0 + sum(T);
-dist = zeros(1,N*(N+1)+1);
+w = (0:0.5:(N*(N+1)/2));  % range of possible values
+dist = zeros(size(w));
 
 ranks = Neq0+cumsum(T)-0.5*(T-1);  % ranks for non-zero groups
 
 % handle 0's
-if Neq > 0  
+if Neq0 > 0
   switch strateq0
     case 'Wilcoxon'
       % after Wilcoxon 1945 "Individual Comparisons by Ranking
@@ -34,12 +35,14 @@ if Neq > 0
       Req0 = Neq0*(Neq0+1)/4;
       dist(2*Req0+1) = 1;
   end
+else
+  dist(1) = 1;
 end
 
 % handle remaining ranks for non-zero values
 for rdx=1:length(T)
   shift = 2*ranks(rdx);
   for tdx=1:T(rdx)
-    dist = pquart*dist + (1-pquart).*[zeros(1,shift),dist(1:end-shift)];
+    dist = pH0*dist + (1-pH0).*[zeros(1,shift),dist(1:end-shift)];
   end
 end

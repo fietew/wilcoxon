@@ -1,8 +1,6 @@
-function [dist, w] = wilcoxon_dist_alt(N, pquart, ptie, peq0, strateq0)
+function res = wilcoxon_iterate_groups(pfunc, N, ptie, peq0)
 
-w = (0:0.5:(N*(N+1)/2));  % range of possible values
-dist = zeros(size(w));
-
+res = 0;
 Ties = zeros(1,N-1);
 jj = 1;
 while true
@@ -10,24 +8,18 @@ while true
   if Ties(jj) <= 1
     % if this is the last entry
     if (jj == N-1)  % if
-      %%%%%% Actual Code begin
-      
       % propability of current combination of Ties
       prop = prod(ptie.^(Ties).*(1-ptie).^(1-Ties));
       
-      % compute groups sizes
-      groups = cumsum([1, ~Ties]);
-      T = histcounts(groups, groups(end));
-      
-      % Distribution of ranksum R, if there are no 0's
-      nonzerodist = wilcoxon_dist_groups(0, T, pquart, strateq0);
-      
-      % Distribution of ranksum R, if there are 0's
-      zerodist = wilcoxon_dist_groups(T(1), T(2:end), pquart, strateq0);
-      
-      % combine the two distributions
-      dist = dist + prop.*((1-peq0).*nonzerodist + peq0.*zerodist);
-      %%%%% Actual Code end
+      if prop
+        % compute groups sizes
+        groups = cumsum([1, ~Ties]);
+        T = histcounts(groups, groups(end));
+        
+        % combine
+        res = res + prop* ...
+          ((1-peq0)*pfunc(0, T) + peq0*pfunc(T(1), T(2:end)));
+      end
       %
       Ties(jj) = Ties(jj) + 1;  % add 1 to the index of the last parameter
     else
