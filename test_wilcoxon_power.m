@@ -1,10 +1,10 @@
 %%
 
-Nvec = 4:1:10;
+Nvec = 5:1:12;
 pH0 = 0.5;
 pH1 = 0.95;
-ptie = 0.9;
-peq0 = 0.1;
+ptie = 0.1;
+peq0 = 0.0;
 alpha = 0.025;
 
 ptievec = 0:0.1:1.0;
@@ -27,7 +27,7 @@ for strateq = {'Wilcoxon', 'Pratt', 'Marascuilo'}
     end
     subplot(3,1,1);
     hold on;
-    plot(Nvec, (1-power), 'o-');
+    plot(Nvec, power, 'o-');
     
     subplot(3,1,2);
     hold on;
@@ -35,12 +35,16 @@ for strateq = {'Wilcoxon', 'Pratt', 'Marascuilo'}
     
     subplot(3,1,3);
     hold on;
-    plot(Nvec, (1-power)-alpha_actual, 'o-');
+    plot(alpha_actual, power, 'o-');
     
     legendstring = [legendstring, ...
       sprintf('%s consider:%d', strateq{1}, consider_ties_zeros)];
   end
 end
 hold off;
+
+subplot(3,1,3);
 legend(legendstring, 'Location', 'southeast');
+xlim([0,1]);
+ylim([0,1]);
 

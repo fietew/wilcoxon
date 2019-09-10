@@ -17,6 +17,6 @@ if isempty(wdx)
     return
 end
 % distribution of ranksum, if H1 is true
-distH1 = wilcoxon_dist_groups(pH1, Neq0, T, strateq0);
+distH1 = wilcoxon_dist_groups(pH1, 0, [Neq0,T], strateq0);
 PH1 = cumsum(distH1);
 power = PH1(wdx);
